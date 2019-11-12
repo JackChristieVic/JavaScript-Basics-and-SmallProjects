@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JavaScript Practice File</title>
+    <link rel="stylesheet" href="Skeleton-2.0.4/css/skeleton.css">
+    <style>
+        .joke-id {
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: right;
+            background-color: bisque;
+        }
+        ul {
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Testing</h1>
+        <form action="">
+            <div>
+                <label for="number">Get Jokes</label>
+                <input type="number" id="number">
+            </div>
+            <div>
+                <button type="submit" class="get-jokes button-primary">Get Jokes</button>
+            </div>
+            
+        </form>
+        <ul class="jokes">xxxxxxxxxxx</ul>
+    </div>
+
+    
+</body>
+
+
+    
+    
+<script>
+   document.querySelector('.get-jokes').addEventListener('click', getJokes);
+   function getJokes(e){
+
+       const number = document.querySelector('input[type=number]').value;
+
+        xhr = new XMLHttpRequest();
+
+        xhr.open('GET',`http://api.icndb.com/jokes/random/${number}`, true);
+
+        xhr.onload = function(){
+            if(this.status === 200){
+                const response = JSON.parse(this.responseText);
+
+                let output = '';
+                
+                response.value.forEach(function(joke){
+                    output += `<ul>
+                                    <li><span class='joke-id'>Joke ${joke.id}: </span> ${joke.joke}</li>
+                               </ul>
+                    
+                                `;
+                })
+
+                document.querySelector('.jokes').innerHTML = output;
+            }else{
+                console.log("failed");
+            }
+        }
+        xhr.send();
+        e.preventDefault();
+        
+   }
+</script>
+</html>
